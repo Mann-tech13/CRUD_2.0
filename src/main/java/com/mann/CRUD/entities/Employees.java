@@ -1,12 +1,12 @@
 package com.mann.CRUD.entities;
 
 public class Employees {
-	private String employeeId;	
+	private int employeeId;	
 	private String employeeName;	
 	private String departmentId;	
 	private String departmentName;
 	
-	public Employees(String employeeId, String employeeName, String departmentId, String departmentName) {
+	public Employees(int employeeId, String employeeName, String departmentId, String departmentName) {
 		super();
 		this.employeeId = employeeId;
 		this.employeeName = employeeName;
@@ -19,10 +19,10 @@ public class Employees {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getEmployeeId() {
+	public int getEmployeeId() {
 		return employeeId;
 	}
-	public void setEmployeeId(String employeeId) {
+	public void setEmployeeId(int employeeId) {
 		this.employeeId = employeeId;
 	}
 	public String getEmployeeName() {
