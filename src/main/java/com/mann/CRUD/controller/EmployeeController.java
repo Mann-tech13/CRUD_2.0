@@ -34,18 +34,14 @@ public class EmployeeController {
 	public List<EmployeeVO> getData(){
 		return this.service.getEmployeeData();
 	}
-//	
-//	@PostMapping(path = "/employees", consumes = "application/json")
-//	public Employees addEmployee(@RequestBody Employees employee) {
-//		System.out.println(employee);
-//		return this.service.addEmployee(employee);
-//	}
 	
 	@PostMapping(path = "/employees", consumes = "application/json")
 	public Employees addEmployee(@RequestBody EmployeeVO valObj) {
-//		System.out.println(employee);
-//		return this.service.addEmployee(employee);
-//		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), valObj.getFlag(), valObj.getDepartment());
+		return this.service.EmpVOImpl(valObj);
+	}
+	
+	@PutMapping(path = "/employees", consumes = "application/json")
+	public Employees updateEmployee(@RequestBody EmployeeVO valObj) {
 		return this.service.EmpVOImpl(valObj);
 	}
 	
@@ -54,10 +50,6 @@ public class EmployeeController {
 //		return this.service.getSingleData(Integer.parseInt(employeeId));
 //	}
 	
-//	@PutMapping(path = "/employees", consumes = "application/json")
-//	public Employees updateEmployee(@RequestBody Employees employee) {
-//		return this.service.updateEmployee(employee);
-//	}
 	
 	
 	
