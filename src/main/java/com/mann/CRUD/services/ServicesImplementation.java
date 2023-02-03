@@ -11,7 +11,8 @@ import com.mann.CRUD.dao.DepartmentDao;
 import com.mann.CRUD.dao.EmployeeDao;
 import com.mann.CRUD.entities.Department;
 import com.mann.CRUD.entities.Employees;
-import com.mann.CRUD.vo.ValueObject;
+import com.mann.CRUD.vo.DepartmentVO;
+import com.mann.CRUD.vo.EmployeeVO;
 
 @Service
 public class ServicesImplementation implements Services {
@@ -19,19 +20,79 @@ public class ServicesImplementation implements Services {
 	private EmployeeDao empDao;
 	@Autowired
 	private DepartmentDao departmentDao;
-//	private Service service;
 
-//	@Override
-//	public List<Employees> getData() {
-//		return empDao.findAll();
-//	}
-
+//	Add Employee and department
 	@Override
 	public Employees addEmployee(Employees employee) {
 		empDao.save(employee);
 		return employee;
 	}
+	
+	@Override
+	public Employees EmpVOImpl(EmployeeVO valObj) {
+		// TODO Auto-generated method stub	
+		int depId = valObj.getDepartment_id();
+		Department depObj = getDepartmentbyEmpId(depId);
+		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), valObj.getFlag(), depObj);
+		return addEmployee(employee);
+	}
+	
+	public Department getDepartmentbyEmpId(int depId) {
+		Optional<Department> dep = departmentDao.findById(depId);
+		Department entity = null;
+		if (dep.isPresent()) {
+		     entity = dep.get();
+		     
+		} else {
+			System.out.println("Not found");
+		}
+		return entity;
+		
+	}
 
+	@Override
+	public Department DepartmentVOImpl(DepartmentVO valObj) {
+		Department department = new Department(valObj.getDepartment_id(), valObj.getDepartment_name());
+		return addDepartment(department);
+	}
+
+	public Department addDepartment(Department department) {
+		departmentDao.save(department);
+		return department;
+	}
+	
+//	Get all data of employee as well as department
+	@Override
+	public List<EmployeeVO> getEmployeeData() {
+		List<EmployeeVO> listVO = new ArrayList<>();
+		List<Employees> list = new ArrayList<>();
+		list = empDao.findAll();
+		
+		for(Employees emp: list) {
+			int emp_id = emp.getEmployee_id();
+			String emp_name = emp.getEmployee_name();
+			String flag = emp.getFlag();
+			Department dep = emp.getDepartment();
+			
+			listVO.add(new EmployeeVO(emp_id, emp_name, flag, dep.getdepartment_id()));
+		}
+		return listVO;
+	}
+
+	@Override
+	public List<DepartmentVO> getDepartmentData() {
+		List<DepartmentVO> listVO = new ArrayList<>();
+		List<Department> list = new ArrayList<>();
+		list = departmentDao.findAll();
+		
+		for(Department dep: list) {
+			int dep_id = dep.getdepartment_id();
+			String dep_name = dep.getdepartment_name();
+			
+			listVO.add(new DepartmentVO(dep_id, dep_name));
+		}
+		return listVO;
+	}
 //	@Override
 //	public Employees getSingleData(int employeeId) {
 //		Optional<Employees> employee = empDao.findById(employeeId);
@@ -51,28 +112,6 @@ public class ServicesImplementation implements Services {
 //		empDao.save(employee);
 //		return employee;
 //	}
-
-	@Override
-	public Employees EmpVOImpl(ValueObject valObj) {
-		// TODO Auto-generated method stub	
-		int depId = valObj.getDepartment_id();
-		Department depObj = getDepartment(depId);
-		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), valObj.getFlag(), depObj);
-		return addEmployee(employee);
-	}
-	
-	public Department getDepartment(int depId) {
-		Optional<Department> dep = departmentDao.findById(depId);
-		Department entity = null;
-		if (dep.isPresent()) {
-		     entity = dep.get();
-		     
-		} else {
-			System.out.println("Not found");
-		}
-		return entity;
-		
-	}
 
 	
 //	@Autowired
