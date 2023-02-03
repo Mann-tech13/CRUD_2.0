@@ -1,13 +1,19 @@
 package com.mann.CRUD.services;
 
-import java.util.List;
 
 import com.mann.CRUD.entities.Employees;
+import com.mann.CRUD.vo.ValueObject;
 
 public interface Services {
-	public Employees addEmployee(Employees employee);
-	public List<Employees> getData();
-	public Employees getSingleData(int employeeId);
-	public Employees deleteEmployee(int employeeId);
-	public Employees updateEmployee(Employees employee);
+
+//	List<Employees> getData();
+
+	Employees addEmployee(Employees employee);
+
+//	Employees getSingleData(int employeeId);
+
+//	Employees updateEmployee(Employees employee);
+
+	Employees EmpVOImpl(ValueObject valObj);
+
 }

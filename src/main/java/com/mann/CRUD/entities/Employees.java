@@ -1,59 +1,69 @@
 package com.mann.CRUD.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Employees {
 	@Id
-	private int employeeId;	
-	private String employeeName;	
-	private String departmentId;	
-	private String departmentName;
-	
-	public Employees(int employeeId, String employeeName, String departmentId, String departmentName) {
-		super();
-		this.employeeId = employeeId;
-		this.employeeName = employeeName;
-		this.departmentId = departmentId;
-		this.departmentName = departmentName;
-	}
+	private int employee_id;	
+	private String employee_name;	
+	private String flag;
+	@JsonBackReference
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "department_id")
+	private Department department;
+//	@JsonIgnore
+
 	
 	public Employees() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public int getEmployeeId() {
-		return employeeId;
-	}
-	public void setEmployeeId(int employeeId) {
-		this.employeeId = employeeId;
-	}
-	public String getEmployeeName() {
-		return employeeName;
-	}
-	public void setEmployeeName(String employeeName) {
-		this.employeeName = employeeName;
-	}
-	public String getDepartmentId() {
-		return departmentId;
-	}
-	public void setDepartmentId(String departmentId) {
-		this.departmentId = departmentId;
-	}
-	public String getDepartmentName() {
-		return departmentName;
-	}
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
+	
+	
+	public Employees(int employee_id, String employee_name, String flag, Department department) {
+		super();
+		
+		this.employee_id = employee_id;
+		this.employee_name = employee_name;
+		this.flag = flag;
+		this.department = department;
 	}
 
-	@Override
-	public String toString() {
-		return "Employees [employeeId=" + employeeId + ", employeeName=" + employeeName + ", departmentId="
-				+ departmentId + ", departmentName=" + departmentName + "]";
+
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+
+	public int getemployee_id() {
+		return employee_id;
+	}
+	public void setemployee_id(int employee_id) {
+		this.employee_id = employee_id;
+	}
+	public String getemployee_name() {
+		return employee_name;
+	}
+	public void setemployee_name(String employee_name) {
+		this.employee_name = employee_name;
+	}
+	public String getFlag() {
+		return flag;
 	}
 	
-	
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 }
