@@ -45,50 +45,8 @@ public class EmployeeController {
 		return this.service.EmpVOImpl(valObj);
 	}
 	
-//	@GetMapping(path = "/employees/{employeeId}")
-//	public Employees getSingleData(@PathVariable String employeeId){
-//		return this.service.getSingleData(Integer.parseInt(employeeId));
-//	}
-	
-	
-	
-	
-	
-//	@Autowired
-//	private Services service;
-//	
-//	@GetMapping("/home")
-//	public String home() {
-//		return "home page executed";
-//	}
-//	
-////	Get all the data
-//	@GetMapping(path = "/employees")
-//	public List<Employees> getData(){
-//		return this.service.getData();
-//	}
-//	
-////	Get single element
-//	@GetMapping(path = "/employees/{employeeId}")
-//	public Employees getSingleData(@PathVariable String employeeId){
-//		return this.service.getSingleData(Integer.parseInt(employeeId));
-//	}
-//	
-////	Send data
-//	@PostMapping(path = "/employees", consumes = "application/json")
-//	public Employees addEmployee(@RequestBody Employees employee) {
-//		return this.service.addEmployee(employee);
-//	}
-//	
-////	delete data
-//	@DeleteMapping(path = "/employees/{employeeId}")
-//	public Employees deleteEmployee(@PathVariable String employeeId) {
-//		return this.service.deleteEmployee(Integer.parseInt(employeeId));
-//	}
-//	
-////	put data
-//	@PutMapping(path = "/employees", consumes = "application/json")
-//	public Employees updateEmployee(@RequestBody Employees employee) {
-//		return this.service.updateEmployee(employee);
-//	}
+	@DeleteMapping(path = "/employees/{employeeId}")
+	public EmployeeVO deleteEmployee(@PathVariable String employeeId) {
+		return this.service.deleteEmployee(Integer.parseInt(employeeId));
+	}
 }

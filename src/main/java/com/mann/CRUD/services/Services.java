@@ -11,18 +11,16 @@ import com.mann.CRUD.vo.EmployeeVO;
 public interface Services {
 
 	List<EmployeeVO> getEmployeeData();
-					
-	Employees addEmployee(Employees employee);
-	
-
-//	Employees getSingleData(int employeeId);
-
-//	Employees updateEmployee(Employees employee);
 
 	Employees EmpVOImpl(EmployeeVO valObj);
+
+	EmployeeVO deleteEmployee(int employeeId);
+	
+	DepartmentVO deleteDepartment(int departmentId);
 
 	Department DepartmentVOImpl(DepartmentVO valObj);
 
 	List<DepartmentVO> getDepartmentData();
+
 
 }

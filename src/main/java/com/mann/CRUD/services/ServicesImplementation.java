@@ -21,8 +21,7 @@ public class ServicesImplementation implements Services {
 	@Autowired
 	private DepartmentDao departmentDao;
 
-//	Add Employee and department
-	@Override
+//	Add Employee and department | PUSH & PUT
 	public Employees addEmployee(Employees employee) {
 		empDao.save(employee);
 		return employee;
@@ -61,7 +60,7 @@ public class ServicesImplementation implements Services {
 		return department;
 	}
 	
-//	Get all data of employee as well as department
+//	Get all data of employee as well as department | GET
 	@Override
 	public List<EmployeeVO> getEmployeeData() {
 		List<EmployeeVO> listVO = new ArrayList<>();
@@ -93,6 +92,33 @@ public class ServicesImplementation implements Services {
 		}
 		return listVO;
 	}
+
+//	Delete Employee and Department Data | Soft & Hard Delete | DELETE
+	@Override
+	public EmployeeVO deleteEmployee(int employeeId) {
+		EmployeeVO empVO = null;
+		Optional<Employees> emp = empDao.findById(employeeId);
+		Employees entity = null;
+		if (emp.isPresent()) {
+		     entity = emp.get();
+		     empVO = new EmployeeVO(entity.getEmployee_id(), entity.getEmployee_name(), entity.getFlag(), entity.getDepartment().getdepartment_id());
+		     empVO.setFlag("Inactive");
+		     Department dep = new Department(entity.getDepartment().getdepartment_id(), entity.getDepartment().getdepartment_name());
+		     empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), empVO.getFlag(), dep));
+		} else {
+			System.out.println("Not found");
+		}
+		
+		return empVO;
+	}
+
+	@Override
+	public DepartmentVO deleteDepartment(int departmentId) {
+
+		return null;
+	}
+	
+	
 	
 	
 //	@Override

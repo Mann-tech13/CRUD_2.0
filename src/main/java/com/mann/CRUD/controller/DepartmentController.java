@@ -3,8 +3,11 @@ package com.mann.CRUD.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,5 +35,15 @@ public class DepartmentController {
 	@GetMapping(path = "/department")
 	public List<DepartmentVO> getData(){
 		return this.service.getDepartmentData();
+	}
+	
+	@PutMapping(path = "/department", consumes = "application/json")
+	public Department updateEmployee(@RequestBody DepartmentVO valObj) {
+		return this.service.DepartmentVOImpl(valObj);
+	}
+	
+	@DeleteMapping(path = "/department/{departmentId}")
+	public DepartmentVO deleteDepartment(@PathVariable String departmentId) {
+		return this.service.deleteDepartment(Integer.parseInt(departmentId));
 	}
 }
