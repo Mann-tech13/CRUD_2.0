@@ -3,6 +3,7 @@ package com.mann.CRUD.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,13 +28,18 @@ public class DepartmentController {
 		return "Department testing..!";
 	}
 	
+	@GetMapping(path = "/department/{departmentId}")
+	public DepartmentVO getSingleDepartment(@PathVariable String departmentId) {
+		return this.service.getSingleDepartment(Integer.parseInt(departmentId));
+	}
+	
 	@PostMapping(path = "/department", consumes = "application/json")
 	public Department addEmployee(@RequestBody DepartmentVO valObj) {
 		return this.service.DepartmentVOImpl(valObj);
 	}
 	
 	@GetMapping(path = "/department")
-	public List<DepartmentVO> getData(){
+	public ResponseEntity<List<DepartmentVO>> getData(){
 		return this.service.getDepartmentData();
 	}
 	

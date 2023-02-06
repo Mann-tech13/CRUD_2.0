@@ -3,6 +3,8 @@ package com.mann.CRUD.services;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.mann.CRUD.entities.Department;
 import com.mann.CRUD.entities.Employees;
 import com.mann.CRUD.vo.DepartmentVO;
@@ -20,7 +22,11 @@ public interface Services {
 
 	Department DepartmentVOImpl(DepartmentVO valObj);
 
-	List<DepartmentVO> getDepartmentData();
+	ResponseEntity<List<DepartmentVO>> getDepartmentData();
+
+	EmployeeVO getSingleEmployee(int employeeId);
+
+	DepartmentVO getSingleDepartment(int departmentId);
 
 
 }

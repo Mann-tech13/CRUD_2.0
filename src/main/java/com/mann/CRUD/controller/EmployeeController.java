@@ -35,6 +35,11 @@ public class EmployeeController {
 		return this.service.getEmployeeData();
 	}
 	
+	@GetMapping(path = "/employees/{employeeId}")
+	public EmployeeVO getSingleEmployee(@PathVariable String employeeId) {
+		return this.service.getSingleEmployee(Integer.parseInt(employeeId));
+	}
+	
 	@PostMapping(path = "/employees", consumes = "application/json")
 	public Employees addEmployee(@RequestBody EmployeeVO valObj) {
 		return this.service.EmpVOImpl(valObj);

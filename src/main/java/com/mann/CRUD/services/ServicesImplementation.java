@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.mann.CRUD.dao.DepartmentDao;
@@ -26,32 +28,34 @@ public class ServicesImplementation implements Services {
 		empDao.save(employee);
 		return employee;
 	}
-	
+
 	@Override
 	public Employees EmpVOImpl(EmployeeVO valObj) {
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 		int depId = valObj.getDepartment_id();
 		Department depObj = getDepartmentbyEmpId(depId);
-		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), valObj.getFlag(), depObj);
+		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), valObj.getFlag(),
+				depObj);
 		return addEmployee(employee);
 	}
-	
+
 	public Department getDepartmentbyEmpId(int depId) {
 		Optional<Department> dep = departmentDao.findById(depId);
 		Department entity = null;
 		if (dep.isPresent()) {
-		     entity = dep.get();
-		     
+			entity = dep.get();
+
 		} else {
 			System.out.println("Not found");
 		}
 		return entity;
-		
+
 	}
 
 	@Override
 	public Department DepartmentVOImpl(DepartmentVO valObj) {
-		Department department = new Department(valObj.getDepartment_id(), valObj.getDepartment_name());
+		Department department = new Department(valObj.getDepartment_id(), valObj.getDepartment_name(),
+				valObj.getFlag());
 		return addDepartment(department);
 	}
 
@@ -59,38 +63,39 @@ public class ServicesImplementation implements Services {
 		departmentDao.save(department);
 		return department;
 	}
-	
+
 //	Get all data of employee as well as department | GET
 	@Override
 	public List<EmployeeVO> getEmployeeData() {
 		List<EmployeeVO> listVO = new ArrayList<>();
 		List<Employees> list = new ArrayList<>();
 		list = empDao.findAll();
-		
-		for(Employees emp: list) {
+
+		for (Employees emp : list) {
 			int emp_id = emp.getEmployee_id();
 			String emp_name = emp.getEmployee_name();
 			String flag = emp.getFlag();
 			Department dep = emp.getDepartment();
-			
-			listVO.add(new EmployeeVO(emp_id, emp_name, flag, dep.getdepartment_id()));
+
+			listVO.add(new EmployeeVO(emp_id, emp_name, flag, dep.getDepartment_id()));
 		}
 		return listVO;
 	}
 
 	@Override
-	public List<DepartmentVO> getDepartmentData() {
+	public ResponseEntity<List<DepartmentVO>> getDepartmentData() {
 		List<DepartmentVO> listVO = new ArrayList<>();
 		List<Department> list = new ArrayList<>();
 		list = departmentDao.findAll();
-		
-		for(Department dep: list) {
-			int dep_id = dep.getdepartment_id();
-			String dep_name = dep.getdepartment_name();
-			
-			listVO.add(new DepartmentVO(dep_id, dep_name));
+
+		for (Department dep : list) {
+			int dep_id = dep.getDepartment_id();
+			String dep_name = dep.getDepartment_name();
+			String dep_flag = dep.getFlag();
+
+			listVO.add(new DepartmentVO(dep_id, dep_name, dep_flag));
 		}
-		return listVO;
+		return new ResponseEntity<List<DepartmentVO>>(listVO, HttpStatus.OK);
 	}
 
 //	Delete Employee and Department Data | Soft & Hard Delete | DELETE
@@ -100,134 +105,102 @@ public class ServicesImplementation implements Services {
 		Optional<Employees> emp = empDao.findById(employeeId);
 		Employees entity = null;
 		if (emp.isPresent()) {
-		     entity = emp.get();
-		     empVO = new EmployeeVO(entity.getEmployee_id(), entity.getEmployee_name(), entity.getFlag(), entity.getDepartment().getdepartment_id());
-		     empVO.setFlag("Inactive");
-		     Department dep = new Department(entity.getDepartment().getdepartment_id(), entity.getDepartment().getdepartment_name());
-		     empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), empVO.getFlag(), dep));
+			entity = emp.get();
+			empVO = new EmployeeVO(entity.getEmployee_id(), entity.getEmployee_name(), entity.getFlag(),
+					entity.getDepartment().getDepartment_id());
+			if (empVO.getFlag().equals("Active")) {
+				empVO.setFlag("Inactive");
+				Department dep = new Department(entity.getDepartment().getDepartment_id(),
+						entity.getDepartment().getDepartment_name(), entity.getDepartment().getFlag());
+				empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), empVO.getFlag(), dep));
+			}
 		} else {
 			System.out.println("Not found");
 		}
-		
+
 		return empVO;
 	}
 
 	@Override
 	public DepartmentVO deleteDepartment(int departmentId) {
+		DepartmentVO depVO = null;
+		Optional<Department> dep = departmentDao.findById(departmentId);
+		Department entity = null;
+		if (dep.isPresent()) {
+			entity = dep.get();
+			depVO = new DepartmentVO(entity.getDepartment_id(), entity.getDepartment_name(), entity.getFlag());
+			if (depVO.getFlag().equals("Active")) {
+				depVO.setFlag("Inactive");
+				List<EmployeeVO> listVO = getEmployeeData();
+				for (EmployeeVO empVO : listVO) {
+					if (empVO.getDepartment_id() == departmentId) {
+						empVO.setFlag("Inactive");
+						empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), empVO.getFlag(), entity));
+					}
 
-		return null;
+				}
+				departmentDao
+						.save(new Department(depVO.getDepartment_id(), depVO.getDepartment_name(), depVO.getFlag()));
+
+			}
+		} else {
+			System.out.println("Not found");
+		}
+		return depVO;
+	}
+
+//	Get Single Data | GET
+	@Override
+	public EmployeeVO getSingleEmployee(int employeeId) {
+		Optional<Employees> employee = empDao.findById(employeeId);
+		EmployeeVO empVO = null;
+		Employees emp = null;
+		if(employee.isPresent()) {
+			emp = employee.get();
+			empVO = new EmployeeVO(emp.getEmployee_id(), emp.getEmployee_name(), emp.getFlag(), emp.getDepartment().getDepartment_id());
+		}
+		return empVO;
+	}
+
+	@Override
+	public DepartmentVO getSingleDepartment(int departmentId) {
+		Optional<Department> department = departmentDao.findById(departmentId);
+		DepartmentVO depVO = null;
+		Department dep = null;
+		if(department.isPresent()) {
+			dep = department.get();
+			depVO = new DepartmentVO(dep.getDepartment_id(), dep.getDepartment_name(), dep.getFlag());
+		}
+		return depVO;
 	}
 	
 	
-	
-	
-//	@Override
-//	public Employees getSingleData(int employeeId) {
-//		Optional<Employees> employee = empDao.findById(employeeId);
-//		Employees entity = null;
-//		if (employee.isPresent()) {
-//		     entity = employee.get();
-//		     
-//		} else {
-//			System.out.println("Not found");
-//		}
-//		
-//		return entity;
-//	}
-//
-//	@Override
-//	public Employees updateEmployee(Employees employee) {
-//		empDao.save(employee);
-//		return employee;
-//	}
-
-	
-//	@Autowired
-//	private EmployeeDao empDao;
-////	List<Employees> list;
-//	public ServicesImplementation() {
-////		list = new ArrayList<>();
-////		list.add(new Employees(10, "Emp", "D01", "QA"));
-////		list.add(new Employees(11, "Emp", "D01", "QA"));
-//	}
-//	
-//	@Override
-//	public List<Employees> getData() {
-////		return list;
-//		return empDao.findAll();
-//	}
-//
-//	@Override
-//	public Employees getSingleData(int employeeId) {
-////		Employees emp = null;
-////		for(Employees employee: list) {
-////			if(employee.getEmployeeId() == employeeId) {
-////				emp = employee;
-////				break;
-////			}
-////		}
-////		return emp;
-//		Optional<Employees> employee = empDao.findById(employeeId);
-//		Employees entity = null;
-//		if (employee.isPresent()) {
-//		    // Entity found in the database
-//		     entity = employee.get();
-//		     
-//		} else {
-//		    // Entity not found in the database
-//			System.out.println("Not found");
-//		}
-//		
-//		return entity;
-//	}
-//
-//	@Override
-//	public Employees addEmployee(Employees employee) {
-////		list.add(employee);
-////		return employee;
-//		empDao.save(employee);
-//		return employee;
-//	}
-//
-//	@Override
-//	public Employees deleteEmployee(int employeeId) {
-////		Employees emp = null;
-////		for(Employees employee: list) {
-////			if(employee.getEmployeeId() == employeeId) {
-////				emp = employee;
-////				list.remove(employee);
-////				break;
-////			}
-////		}
-////		return emp;
-//		Optional<Employees> employee = empDao.findById(employeeId);
-//		Employees entity = null;
-//		if (employee.isPresent()) {
-//		    // Entity found in the database
-//		     entity = employee.get();
-//		     empDao.delete(entity);
-//		} else {
-//		    // Entity not found in the database
-//			System.out.println("Not found");
-//		}
-//
-//		return entity;
-//	}
-//
-//	@Override
-//	public Employees updateEmployee(Employees employee) {
-//		
-////		int index = 0;
-////		for(Employees existedEmployee: list) {
-////			if(existedEmployee.getEmployeeId() == employee.getEmployeeId()) {
-////				list.set(index, employee);
-////				break;
-////			}
-////			index++;
-////		}
-////		return employee;
-//		empDao.save(employee);
-//		return employee;
-//	}
-
 }
+
+
+
+
+
+//	@Override
+//	public Employees getSingleData(int employeeId) {
+////		Employees emp = null;
+////		for(Employees employee: list) {
+////			if(employee.getEmployeeId() == employeeId) {
+////				emp = employee;
+////				break;
+////			}
+////		}
+////		return emp;
+//		Optional<Employees> employee = empDao.findById(employeeId);
+//		Employees entity = null;
+//		if (employee.isPresent()) {
+//		    // Entity found in the database
+//		     entity = employee.get();
+//		     
+//		} else {
+//		    // Entity not found in the database
+//			System.out.println("Not found");
+//		}
+//		
+//		return entity;
+//	}

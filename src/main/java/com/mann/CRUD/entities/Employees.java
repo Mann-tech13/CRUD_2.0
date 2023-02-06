@@ -18,7 +18,6 @@ public class Employees {
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "department_id")
 	private Department department;
-//	@JsonIgnore
 
 	
 	public Employees() {
@@ -66,4 +65,5 @@ public class Employees {
 	public void setFlag(String flag) {
 		this.flag = flag;
 	}
+	
 }

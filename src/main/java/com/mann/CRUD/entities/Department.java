@@ -14,6 +14,7 @@ public class Department {
 	@Id
 	private int department_id;	
 	private String department_name;
+	private String flag;
 	
 //	Can have many employees
 	@JsonManagedReference
@@ -23,28 +24,31 @@ public class Department {
 	public Department() {
 		super();
 	}
-	public Department(int department_id, String department_name) {
+	
+	public Department(int department_id, String department_name, String flag) {
 		super();
 		this.department_id = department_id;
 		this.department_name = department_name;
+		this.flag = flag;
 	}
-	public Department(int department_id, String department_name, List<Employees> list) {
-		super();
-		this.department_id = department_id;
-		this.department_name = department_name;
-		this.list = list;
-	}
-	public int getdepartment_id() {
+
+	public int getDepartment_id() {
 		return department_id;
 	}
-	public void setdepartment_id(int department_id) {
+	public void setDepartment_id(int department_id) {
 		this.department_id = department_id;
 	}
-	public String getdepartment_name() {
+	public String getDepartment_name() {
 		return department_name;
 	}
-	public void setdepartment_name(String department_name) {
+	public void setDepartment_name(String department_name) {
 		this.department_name = department_name;
+	}
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 	public List<Employees> getList() {
 		return list;
