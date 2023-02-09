@@ -19,7 +19,7 @@
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-input {
+.input {
     width: 95%;
     padding: 10px;
     margin: 7px;
@@ -75,20 +75,20 @@ select:focus{
     margin: 0 auto;
     
 }
-table {
+.table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-td,
-th {
+.td,
+.th {
     border: 1px solid rgb(190, 180, 200);
     text-align: left;
     padding: 8px;
 }
 
-tr:nth-child(even) {
+.tr:nth-child(even) {
     background-color: rgb(190, 180, 200);
 }
 .edit,
@@ -98,3 +98,27 @@ tr:nth-child(even) {
     cursor: pointer;
     padding: 0 10px;
 }
+
+
+/* ------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------- */
+            /* ********************  PAGINATION ******************** */
+/* ------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------- */
+
+.pagination{
+    margin: 0 auto;
+}
+
+.pages{
+    margin-top: 40px;
+    background: rgb(96, 37, 150);
+    color: #ffffff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    padding: 5px 8px;
+}
+
+
