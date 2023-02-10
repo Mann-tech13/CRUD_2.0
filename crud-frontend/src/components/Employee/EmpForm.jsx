@@ -26,16 +26,9 @@ function EmpForm() {
     department_id: 0
   }
 
-  // useEffect(() => {
-  // }, [empId])
-  // useEffect(() => {
-  // }, [depId])
-  // useEffect(() => {
-  // }, [empName])
-  // useEffect(() => {
-  // }, [flag])
-  // useEffect(() => {
-  // }, [slicedData])
+  useEffect(() => {
+    setDependency(lastVal => (lastVal === true ? false : true));
+}, [empId])
   
   // PUSH | PUT
   const handleClick = async (e) => {
@@ -53,7 +46,7 @@ function EmpForm() {
     else if (depId === undefined) {
       return alert("Select the department")
     }
-    setDependency(lastVal => (dependency === true ? false : true))
+    // setDependency(lastVal => (dependency === true ? false : true))
     let method_check = false
     emp = {
       employee_id: empId,
@@ -87,7 +80,8 @@ function EmpForm() {
 
   // DELETE
   const handleDeleteClick = async (e, id) => {
-    const result = await axios.delete(`http://localhost:9090/employees/${id}`)
+    await axios.delete(`http://localhost:9090/employees/${id}`)
+    setDependency(lastVal => (lastVal === true ? false : true))
   }
   
   // Edit data on form
@@ -115,10 +109,10 @@ function EmpForm() {
     setStartfrom(lastValue => ((e.target.value - 1) * dataOnPage))
     setEndat(lastValue => (((e.target.value - 1) * dataOnPage) + dataOnPage))
   }
-  useEffect(() => {
-  }, [startfrom])
-  useEffect(() => {
-  }, [endat])
+  // useEffect(() => {
+  // }, [startfrom])
+  // useEffect(() => {
+  // }, [endat])
 
 
   // Getall departments
@@ -145,7 +139,7 @@ function EmpForm() {
       })
     // }
     // getEmployees()
-  }, [getData])
+  }, [dependency])
 
 
 
