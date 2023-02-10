@@ -1,11 +1,12 @@
-import logo from './logo.svg';
-import Form from './components/Form/Form';
+import EmpForm from './components/Employee/EmpForm';
+import DepForm from './components/Department/DepForm'
 import './App.css';
 
 function App() {
   return (
     <div>
-      <Form/>
+      {/* <EmpForm/> */}
+      <DepForm/>
     </div>
   );
 }

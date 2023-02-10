@@ -1,0 +1,93 @@
+.d-form {
+    width: 25%;
+    margin: 10% auto;
+    margin-bottom: 5%;
+    padding: 5%;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.45);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.d-input {
+    width: 95%;
+    padding: 10px;
+    margin: 7px;
+    border-radius: 10px;
+    box-shadow: rgba(255, 255, 255) 0px 2px 8px 0px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-color: #aedcf9;
+}
+.d-input-field:focus {
+    outline: none;
+}
+
+.d-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.d-submit-btn,
+.d-clear-btn {
+    background-image: linear-gradient(to right, #aedcf9 0%, #f9adc0 51%, #aedcf9 100%);
+    margin: 10px 0;
+    padding: 10px 25px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: var(--color-white);
+    box-shadow: 0 0 20px var(--color-white);
+    border-radius: 10px;
+    display: block;
+    border: none;
+}
+
+.d-submit-btn:hover,
+.d-clear-btn:hover {
+    background-position: right center;
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+
+
+
+
+
+.d-data{
+    width: 60%;
+    margin: 0 auto;
+    
+}
+.d-table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.d-td,
+.d-th {
+    border: 1px solid rgb(190, 180, 200);
+    text-align: left;
+    padding: 8px;
+}
+
+.d-tr:nth-child(even) {
+    background-color: #f5d7de;
+}
+
+.d-edit,
+.d-delete{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 10px;
+}

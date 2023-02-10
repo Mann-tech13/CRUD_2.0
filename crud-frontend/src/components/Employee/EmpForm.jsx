@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import "./Form.css"
+import "./EmpForm.css"
 
-function Form() {
+function EmpForm() {
   let dataOnPage = 5
-
+  const [dependency, setDependency] = useState(false)
   const [startfrom, setStartfrom] = useState(0)
   const [endat, setEndat] = useState(5)
   const [empId, setEmpId] = useState()
@@ -53,6 +53,7 @@ function Form() {
     else if (depId === undefined) {
       return alert("Select the department")
     }
+    setDependency(lastVal => (dependency === true ? false : true))
     let method_check = false
     emp = {
       employee_id: empId,
@@ -76,7 +77,7 @@ function Form() {
       // console.log("PUT invoked")
       await axios.put("http://localhost:9090/employees", emp)
       setGetData(lastData => ([...getData]))
-      console.log(getData)
+      // console.log(getData)
     }
     setEmpId("")
     setEmpName("")
@@ -247,4 +248,4 @@ function Form() {
   )
 }
 
-export default Form
+export default EmpForm
