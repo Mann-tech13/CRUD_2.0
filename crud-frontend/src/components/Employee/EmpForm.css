@@ -1,3 +1,8 @@
+.content{
+    flex: 1;
+    height: 100vh;
+    overflow-y: scroll;
+}
 .form-app {
     position: absolute;
     left: 0;
@@ -31,7 +36,7 @@
     border-bottom-color: rgb(84, 9, 154);
 }
 
-select{
+.select-department{
     width: 100%;
     padding: 10px;
     margin: 7px;
@@ -68,6 +73,17 @@ select:focus{
 .clear-btn:hover {
     color: rgb(84, 9, 154);
     background-color: #ffffff;
+}
+
+
+
+.filter{
+    width: 20%;
+    margin: 0 auto;
+    margin-bottom: 5%;
+}
+.status{
+    width: 100%;
 }
 
 

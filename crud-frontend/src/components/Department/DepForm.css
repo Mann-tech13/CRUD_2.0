@@ -1,3 +1,9 @@
+.dep-field{
+    flex: 1;
+    height: 100vh;
+    overflow-y: scroll;
+}
+
 .d-form {
     width: 25%;
     margin: 10% auto;

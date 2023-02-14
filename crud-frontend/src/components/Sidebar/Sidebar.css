@@ -1,0 +1,30 @@
+.closemenu {
+  height: 6vh;
+}
+
+.closemenu>svg {
+  width: 3em;
+  height: 3em;
+}
+
+.pro-sidebar>.pro-sidebar-inner {
+  height: 100vh;
+  background-image: linear-gradient(to bottom, #f5d7de, #dfa5be, #c075a9, #db8adf, #cca1f1);
+}
+
+.pro-sidebar .pro-menu .pro-menu-item.active {
+  color: #ffffff;
+  background: #602592;
+}
+
+.pro-sidebar .pro-menu {
+  color: black;
+}
+
+.pro-sidebar {
+  color: #602592;
+  /* position: absolute; */
+}
+.active{
+  border-bottom: 1px solid #602592;
+}
