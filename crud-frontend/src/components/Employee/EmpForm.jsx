@@ -4,25 +4,42 @@ import "./EmpForm.css"
 
 function EmpForm() {
   let dataOnPage = 5
+
+  // dependency check for rendering api calls
   const [dependency, setDependency] = useState(false)
+
+  // Pagination values
   const [startfrom, setStartfrom] = useState(0)
   const [endat, setEndat] = useState(5)
+  const [pages, setPages] = useState([])
+
+  // Entity of emp
   const [empId, setEmpId] = useState()
   const [empName, setEmpName] = useState("")
   const [flag, setFlag] = useState("")
+
+  // department id of selected department from dropdown
   const [depId, setDepId] = useState()
+
+  // List of all employees
   const [allImmutableData, setAllImmutableData] = useState([])
 
+  // search value
   const [search, setSearch] = useState("")
+  const [searchDependency, setSearchDependency] = useState(false)
+
+  // filtered list
   const [status, setStatus] = useState("All")
 
+  // to display data on page
   const [getData, setGetData] = useState([])
-  const [slicedData, setSlicedData] = useState([])
+
+  // to hold and display department list
   const [getDepartmentData, setGetDepartmentData] = useState([])
+
+  // set length of department list
   const [len, setLen] = useState(0)
 
-  const [pages, setPages] = useState([])
-  // const [pageData, setPageData] = useState([])
   let emp = {
     employee_id: 0,
     employee_name: "",
@@ -115,23 +132,55 @@ function EmpForm() {
     setEndat(lastValue => (((e.target.value - 1) * dataOnPage) + dataOnPage))
   }
 
-  const handleStatusChange = (e) => {
-    // console.log(e.target.value);
-    setStatus(e.target.value)
-    setGetData(allImmutableData)
-    // console.log("Called");
-  }
+  // const handleStatusChange = (e) => {
+  //   setStatus(e.target.value)
+  //   setGetData(allImmutableData)
+  // }
 
-  const handleSearch = (e) => {
-    let filteredData = []
-    getData.map((searchedVal) => {
-      // if(searchedVal.name === search || searchedVal.)
-    })
-  }
   useEffect(() => {
-    if (status !== "All") {
-      let filteredData = []
+    getDepartmentData.map((dep) => {
+      if (dep.department_name === search) {
+        departmentSelectedId = dep.department_id
+      }
+    })
+    setDepId(lastVal => departmentSelectedId)
+  }, [searchDependency])
+  // const handleSearch = (e) => {
+  //   let filteredData = []
+  //   if(search !== ""){
+  //     allImmutableData.map((searchedVal) => {
+  //       if(searchedVal.employee_name === search || searchedVal.department_id === depId){
+  //         filteredData.push(searchedVal)
+  //       }
+  //     })
+  //     setGetData(filteredData)
+  //     let rem = filteredData.length % dataOnPage
+  //     let nos = Math.floor(filteredData.length / dataOnPage)
+  //     nos = rem === 0 ? nos : nos + 1
+  //     let tempPageHold = []
+  //     for (let i = 1; i <= nos; i++) {
+  //       tempPageHold.push(i)
+  //     }
+  //     setPages(tempPageHold)
+  //   }
+  // }
 
+  const handleFilter = (e) => {
+    if (e.target.name === "search") {
+      setSearch(e.target.value)
+      setSearchDependency(!searchDependency)
+    }
+    else if (e.target.name === "filter") {
+      setStatus(e.target.value)
+    }
+  }
+
+  const handleFilteredClick = () => {
+    if (search === "" && status === "All") {
+      setDependency(!dependency)
+    }
+    else if (search === "" && status !== "All") {
+      let filteredData = []
       allImmutableData.map((data) => {
         if (data.flag === status) {
           filteredData.push(data)
@@ -147,14 +196,59 @@ function EmpForm() {
       }
       setPages(tempPageHold)
     }
-    else {
-      setGetData(allImmutableData)
-      setDependency(!dependency)
-    }
+    else if (search !== "" && status === "All") {
+      if(search !== 0 || search !== "0"){
 
-  }, [status])
+      }
+    }
+    else if (search !== "" && status !== "All") {
+
+    }
+  }
+
+  // const handleInputStates = (e) => {
+  //   setSearch(lastSearch => (e.target.value))
+  //   setSearchDependency(!searchDependency)
+  // }
+
+  // useEffect(() => {
+  //   if (status !== "All") {
+  //     let filteredData = []
+  //     if(search === ""){
+  //       // console.log(search);
+  //       allImmutableData.map((data) => {
+  //         if (data.flag === status) {
+  //           filteredData.push(data)
+  //         }
+  //       })
+  //     }
+  //     else{
+  //       // console.log(getData);
+  //       getData.map((data) => {
+  //         if (data.flag === status) {
+  //           filteredData.push(data)
+  //         }
+  //       })
+  //     }
+  //     setGetData(filteredData)
+  //     let rem = filteredData.length % dataOnPage
+  //     let nos = Math.floor(filteredData.length / dataOnPage)
+  //     nos = rem === 0 ? nos : nos + 1
+  //     let tempPageHold = []
+  //     for (let i = 1; i <= nos; i++) {
+  //       tempPageHold.push(i)
+  //     }
+  //     setPages(tempPageHold)
+  //   }
+  //   else {
+  //     setGetData(allImmutableData)
+  //   }
+
+  // }, [status])
 
   // Getall departments
+
+
   useEffect(() => {
     axios.get("http://localhost:9090/department").then((response) => {
       setGetDepartmentData(response.data)
@@ -224,15 +318,18 @@ function EmpForm() {
           </div>
         </div>
       </form>
-
+      {/* onChange={(e) => handleInputStates(e)}
+      onClick={handleSearch}
+      onChange={(e) => handleStatusChange(e)} */}
       <div className="filter">
-        <input type="search" name="search" id="" onChange={(e) => {setSearch(lastSearch => (e.target.value))}}/>
-        <input type="button" value="search" onClick={handleSearch}/>
-        <select name="" id="" className='status' onChange={(e) => handleStatusChange(e)}>
-          <option value="All">All</option>
+        <input type="search" name="search" id="" onChange={(e) => handleFilter(e)} />
+        <input type="button" value="search" onClick={handleFilteredClick} />
+        <select name="filter" id="" className='status' onChange={(e) => handleFilter(e)}>
+          <option value="All" selected>All</option>
           <option value="Active">Active</option>
           <option value="Inactive">Inactive</option>
         </select>
+        <input type="button" value="Apply" onClick={handleFilteredClick} />
       </div>
 
       <div className="data">
