@@ -26,6 +26,7 @@ function EmpForm() {
 
   // search value
   const [search, setSearch] = useState("")
+  const [searchdepId, setSearchdepId] = useState()
   const [searchDependency, setSearchDependency] = useState(false)
 
   // filtered list
@@ -132,10 +133,6 @@ function EmpForm() {
     setEndat(lastValue => (((e.target.value - 1) * dataOnPage) + dataOnPage))
   }
 
-  // const handleStatusChange = (e) => {
-  //   setStatus(e.target.value)
-  //   setGetData(allImmutableData)
-  // }
 
   useEffect(() => {
     getDepartmentData.map((dep) => {
@@ -143,27 +140,9 @@ function EmpForm() {
         departmentSelectedId = dep.department_id
       }
     })
-    setDepId(lastVal => departmentSelectedId)
+    setSearchdepId(departmentSelectedId)
   }, [searchDependency])
-  // const handleSearch = (e) => {
-  //   let filteredData = []
-  //   if(search !== ""){
-  //     allImmutableData.map((searchedVal) => {
-  //       if(searchedVal.employee_name === search || searchedVal.department_id === depId){
-  //         filteredData.push(searchedVal)
-  //       }
-  //     })
-  //     setGetData(filteredData)
-  //     let rem = filteredData.length % dataOnPage
-  //     let nos = Math.floor(filteredData.length / dataOnPage)
-  //     nos = rem === 0 ? nos : nos + 1
-  //     let tempPageHold = []
-  //     for (let i = 1; i <= nos; i++) {
-  //       tempPageHold.push(i)
-  //     }
-  //     setPages(tempPageHold)
-  //   }
-  // }
+
 
   const handleFilter = (e) => {
     if (e.target.name === "search") {
@@ -197,57 +176,81 @@ function EmpForm() {
       setPages(tempPageHold)
     }
     else if (search !== "" && status === "All") {
-      if(search !== 0 || search !== "0"){
-
+      // if(search !== 0 || search !== "0"){
+      let filteredData = []
+      if (searchdepId !== 0) {
+        allImmutableData.map((data) => {
+          if (data.department_id === searchdepId) {
+            filteredData.push(data)
+          }
+        })
       }
+      else {
+        allImmutableData.map((data) => {
+          if (data.employee_name === search) {
+            filteredData.push(data)
+          }
+        })
+      }
+
+      if (filteredData.length > 0) {
+
+        setGetData(filteredData)
+        let rem = filteredData.length % dataOnPage
+        let nos = Math.floor(filteredData.length / dataOnPage)
+        nos = rem === 0 ? nos : nos + 1
+        let tempPageHold = []
+        for (let i = 1; i <= nos; i++) {
+          tempPageHold.push(i)
+        }
+        setPages(tempPageHold)
+      }
+      // }
     }
     else if (search !== "" && status !== "All") {
-
+      // search | status
+      let filteredData = []
+      let combinedData = []
+      if (searchdepId !== 0) {
+        allImmutableData.map((data) => {
+          if (data.department_id === searchdepId) {
+            filteredData.push(data)
+          }
+        })
+      }
+      else {
+        allImmutableData.map((data) => {
+          if (data.employee_name === search) {
+            filteredData.push(data)
+          }
+        })
+      }
+      if (filteredData.length > 0) {
+        filteredData.map((data) => {
+          if (data.flag === status) {
+            combinedData.push(data)
+          }
+        })
+        if (combinedData.length > 0) {
+          setGetData(combinedData)
+          let rem = combinedData.length % dataOnPage
+          let nos = Math.floor(combinedData.length / dataOnPage)
+          nos = rem === 0 ? nos : nos + 1
+          let tempPageHold = []
+          for (let i = 1; i <= nos; i++) {
+            tempPageHold.push(i)
+          }
+          setPages(tempPageHold)
+        }
+        else{
+          setGetData(filteredData)
+        }
+      }
+      else{
+        setGetData(allImmutableData)
+      }
     }
   }
-
-  // const handleInputStates = (e) => {
-  //   setSearch(lastSearch => (e.target.value))
-  //   setSearchDependency(!searchDependency)
-  // }
-
-  // useEffect(() => {
-  //   if (status !== "All") {
-  //     let filteredData = []
-  //     if(search === ""){
-  //       // console.log(search);
-  //       allImmutableData.map((data) => {
-  //         if (data.flag === status) {
-  //           filteredData.push(data)
-  //         }
-  //       })
-  //     }
-  //     else{
-  //       // console.log(getData);
-  //       getData.map((data) => {
-  //         if (data.flag === status) {
-  //           filteredData.push(data)
-  //         }
-  //       })
-  //     }
-  //     setGetData(filteredData)
-  //     let rem = filteredData.length % dataOnPage
-  //     let nos = Math.floor(filteredData.length / dataOnPage)
-  //     nos = rem === 0 ? nos : nos + 1
-  //     let tempPageHold = []
-  //     for (let i = 1; i <= nos; i++) {
-  //       tempPageHold.push(i)
-  //     }
-  //     setPages(tempPageHold)
-  //   }
-  //   else {
-  //     setGetData(allImmutableData)
-  //   }
-
-  // }, [status])
-
-  // Getall departments
-
 
   useEffect(() => {
     axios.get("http://localhost:9090/department").then((response) => {
@@ -269,7 +272,9 @@ function EmpForm() {
 
 
       // console.log(slicedData)
-      let nos = Math.floor(response.data.length / dataOnPage) + 1
+      let rem = response.data.length % dataOnPage
+      let nos = Math.floor(response.data.length / dataOnPage)
+      nos = rem === 0 ? nos : nos + 1
       let tempPageHold = []
       for (let i = 1; i <= nos; i++) {
         tempPageHold.push(i)
@@ -318,18 +323,22 @@ function EmpForm() {
           </div>
         </div>
       </form>
-      {/* onChange={(e) => handleInputStates(e)}
-      onClick={handleSearch}
-      onChange={(e) => handleStatusChange(e)} */}
+
       <div className="filter">
-        <input type="search" name="search" id="" onChange={(e) => handleFilter(e)} />
-        <input type="button" value="search" onClick={handleFilteredClick} />
-        <select name="filter" id="" className='status' onChange={(e) => handleFilter(e)}>
-          <option value="All" selected>All</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
-        </select>
-        <input type="button" value="Apply" onClick={handleFilteredClick} />
+        <div className="searching">
+          <input type="search" name="search" className='search' id="" onChange={(e) => handleFilter(e)} />
+          <input type="button" value="search" className='search-btn' onClick={handleFilteredClick} />
+
+        </div>
+        <div className="filtering">
+
+          <select name="filter" id="" className='status' onChange={(e) => handleFilter(e)}>
+            <option value="All" selected>All</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+          <input type="button" value="Apply" className='apply-btn' onClick={handleFilteredClick} />
+        </div>
       </div>
 
       <div className="data">
