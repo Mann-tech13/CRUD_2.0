@@ -12,7 +12,7 @@
 
 .form {
     width: 25%;
-    margin: 0 auto;
+    margin: 10% auto;
     margin-bottom: 10%;
     padding: 5%;
     border-radius: 15px;
@@ -27,7 +27,7 @@
 .input {
     width: 95%;
     padding: 10px;
-    margin: 7px;
+    margin: 0 7px;
     border-radius: 10px;
     box-shadow: rgba(255, 255, 255) 0px 2px 8px 0px;
     border-top: none;
@@ -71,6 +71,16 @@ select:focus, .input-field:focus{
     background-color: #ffffff;
 }
 
+.employee-id, .employee-name, .employee-status, .department-name{
+
+    margin-bottom: 12px;    
+}
+
+.validate{
+    color: red;
+    font-size: 12px;
+    padding: 0 10px;
+}
 
 
 /* ------------------------------------------------------------------------------------- */

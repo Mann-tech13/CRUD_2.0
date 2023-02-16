@@ -6,10 +6,16 @@ function DepForm() {
     // dependency to get all department
     const [dependency, setDependency] = useState(false)
 
+    // Validation
+    const [validate, setValidate] = useState({
+        dep_name: "",
+        flag: "",
+    })
+
     // to store all department values 
     const [depId, setDepId] = useState()
     const [depName, setDepName] = useState("")
-    const [flag, setFlag] = useState("")
+    const [flag, setFlag] = useState("Active")
 
     // dissplay all departments
     const [getDep, setGetDep] = useState([])
@@ -17,7 +23,6 @@ function DepForm() {
 
     // filters
     const [search, setSearch] = useState("")
-    const [searchDependency, setSearchDependency] = useState(false)
     const [status, setStatus] = useState("All")
 
 
@@ -38,15 +43,11 @@ function DepForm() {
 
     const handleClick = async (e) => {
         e.preventDefault()
-
-        if (depId === undefined) {
-            return alert("Department Id is empty")
-        }
-        else if (depName === "") {
-            return alert("Department Name is empty")
+        if (depName === "") {
+            return setValidate({ dep_name: null })
         }
         else if (flag === undefined || (flag !== "Active" && flag !== "Inactive")) {
-            return alert("Status is wrong")
+            return setValidate({ flag: null })
         }
         let method_check = false
         dep = {
@@ -68,9 +69,7 @@ function DepForm() {
             await axios.put("http://localhost:9090/department", dep)
             setGetDep(lastData => ([...getDep]))
         }
-        setDepId("")
-        setDepName("")
-        setFlag("")
+
     }
 
     const handleEditClick = async (e, id) => {
@@ -172,6 +171,11 @@ function DepForm() {
         }
     }
 
+    const handleClearClick = () => {
+        setDepName("")
+        setFlag("")
+    }
+
     useEffect(() => {
         // const getEmployees = async() => {
 
@@ -179,7 +183,9 @@ function DepForm() {
             setGetDep(response.data)
             setAllImmutableData(response.data)
             // console.log(slicedData)
-            let nos = Math.floor(response.data.length / dataOnPage) + 1
+            let rem =  response.data.length % dataOnPage
+            let nos = Math.floor(response.data.length / dataOnPage)
+            nos = rem === 0? nos: nos+1
             let tempPageHold = []
             for (let i = 1; i <= nos; i++) {
                 tempPageHold.push(i)
@@ -193,21 +199,28 @@ function DepForm() {
     return (
         <div className='dep-field'>
             <form action="" className='d-form'>
-                <div className="department-id">
-                    <input type="text" name="department_id" value={depId} placeholder='Department ID' className='d-input-field d-input' onChange={(e) => setDepId(lastValue => (e.target.value))} required />
-                </div>
+
                 <div className="department-name">
                     <input type="text" name="department_name" value={depName} placeholder='Department Name' className='d-input-field d-input' onChange={(e) => setDepName(lastValue => (e.target.value))} />
+                    <span className='validate'>
+                        {
+                            validate.dep_name === null ? "Department Name is mandatory" : ""
+                        }
+                    </span>
                 </div>
                 <div className="department-status">
-                    <input type="text" name="flag" value={flag} placeholder='Department Status' className='d-input-field d-input' onChange={(e) => setFlag(lastValue => (e.target.value))} />
+
+                    <select name="flag" id="" className='d-input-field d-input' onChange={(e) => setFlag(lastValue => (e.target.value))}>
+                        <option value="Active" selected>Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
                 </div>
                 <div className="d-buttons d-input-field" >
                     <div className="d-submit">
                         <input type="submit" className='d-submit-btn d-input' onClick={(e) => handleClick(e)} />
                     </div>
                     <div className="d-clear">
-                        <input type="button" value="Clear" className='d-clear-btn d-input' />
+                        <input type="button" value="Clear" className='d-clear-btn d-input' onClick={(e) => handleClearClick(e)} />
                     </div>
                 </div>
             </form>
