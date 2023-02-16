@@ -34,8 +34,7 @@ public class ServicesImplementation implements Services {
 		// TODO Auto-generated method stub
 		int depId = valObj.getDepartment_id();
 		Department depObj = getDepartmentbyEmpId(depId);
-		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), valObj.getFlag(),
-				depObj);
+		Employees employee = new Employees(valObj.getEmployee_id(), valObj.getEmployee_name(), depObj, valObj.getFlag());
 		return addEmployee(employee);
 	}
 
@@ -112,7 +111,7 @@ public class ServicesImplementation implements Services {
 				empVO.setFlag("Inactive");
 				Department dep = new Department(entity.getDepartment().getDepartment_id(),
 						entity.getDepartment().getDepartment_name(), entity.getDepartment().getFlag());
-				empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), empVO.getFlag(), dep));
+				empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), dep, empVO.getFlag()));
 			}
 		} else {
 			System.out.println("Not found");
@@ -135,7 +134,7 @@ public class ServicesImplementation implements Services {
 				for (EmployeeVO empVO : listVO) {
 					if (empVO.getDepartment_id() == departmentId) {
 						empVO.setFlag("Inactive");
-						empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), empVO.getFlag(), entity));
+						empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), entity, empVO.getFlag()));
 					}
 
 				}
@@ -181,26 +180,3 @@ public class ServicesImplementation implements Services {
 
 
 
-//	@Override
-//	public Employees getSingleData(int employeeId) {
-////		Employees emp = null;
-////		for(Employees employee: list) {
-////			if(employee.getEmployeeId() == employeeId) {
-////				emp = employee;
-////				break;
-////			}
-////		}
-////		return emp;
-//		Optional<Employees> employee = empDao.findById(employeeId);
-//		Employees entity = null;
-//		if (employee.isPresent()) {
-//		    // Entity found in the database
-//		     entity = employee.get();
-//		     
-//		} else {
-//		    // Entity not found in the database
-//			System.out.println("Not found");
-//		}
-//		
-//		return entity;
-//	}

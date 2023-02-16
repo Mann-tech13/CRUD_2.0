@@ -3,21 +3,28 @@ package com.mann.CRUD.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 
 @Entity
 public class Employees {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@SequenceGenerator(initialValue = 50, name = "emp")
+	@Column(unique=true)
 	private int employee_id;	
 	private String employee_name;	
-	private String flag;
 	@JsonBackReference
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "department_id")
 	private Department department;
+	private String flag;
 
 	
 	public Employees() {
@@ -26,7 +33,7 @@ public class Employees {
 
 	
 	
-	public Employees(int employee_id, String employee_name, String flag, Department department) {
+	public Employees(int employee_id, String employee_name, Department department, String flag) {
 		super();
 		
 		this.employee_id = employee_id;
