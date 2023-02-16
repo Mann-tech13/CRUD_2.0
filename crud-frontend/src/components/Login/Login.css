@@ -1,0 +1,30 @@
+.login-div{
+    width: 100%;
+    text-align: center;
+    margin: 10% 0;
+}
+
+.name, .pwd{
+    padding: 7px;
+    border: none;
+    border-radius: 8px;
+    border-bottom: 1px solid black;
+    margin: 1%;
+    width: 20%;
+}
+
+.name:focus, .pwd:focus{
+    outline: none;
+}
+
+.login-head{
+    font-size: 44px;
+    font-weight: lighter;
+}
+
+.login-btn, .reg-btn{
+    background: none;
+    border-radius: 8px;
+    padding: 5px 25px;
+    margin: 15px 0;
+}
