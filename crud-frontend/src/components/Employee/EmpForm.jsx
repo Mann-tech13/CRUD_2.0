@@ -176,7 +176,6 @@ function EmpForm() {
       setPages(tempPageHold)
     }
     else if (search !== "" && status === "All") {
-      // if(search !== 0 || search !== "0"){
       let filteredData = []
       if (searchdepId !== 0) {
         allImmutableData.map((data) => {
@@ -380,10 +379,6 @@ function EmpForm() {
           </tbody>
         </table>
       </div>
-
-      {/* <div className="search">
-        <input type="search" name="search" id="" placeholder='Search by Id'/>
-      </div> */}
 
 
 
