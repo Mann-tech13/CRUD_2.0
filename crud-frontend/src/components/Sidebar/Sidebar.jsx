@@ -27,8 +27,6 @@ function Sidebar() {
         navigate('/')
     }
     const handleDepClick = (e) => {
-        // console.log(e)
-
         setActivepage({
             emp: false,
             dep: true
@@ -36,17 +34,8 @@ function Sidebar() {
         setBool(!bool)
         navigate('/department')
     }
-    
-    // useEffect(() => {
-    //     const localActive = localStorage.getItem('active');
-    //     console.log(localActive)
-    //     if (localActive) {
-    //         setActivepage(JSON.parse(localActive));
-    //     }
-    // }, []);
     useEffect(() => {
         localStorage.setItem('active', JSON.stringify(activepage));
-        // console.log("2");
     }, [bool]);
 
 
@@ -69,13 +58,11 @@ function Sidebar() {
                     <Menu iconShape="square">
                         <MenuItem active={activepage.emp} onClick={(e) => handleEmpClick(e)}>
                             {/* <div className="one active" > */}
-
                             Employee
                             {/* </div> */}
                         </MenuItem>
                         <MenuItem active={activepage.dep} onClick={(e) => handleDepClick(e)}>
                             {/* <div className="two "> */}
-
                             Department
                             {/* </div> */}
                         </MenuItem>

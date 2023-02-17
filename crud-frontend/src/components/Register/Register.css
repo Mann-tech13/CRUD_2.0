@@ -1,4 +1,4 @@
-.login-div {
+.register-div {
     width: 100%;
     height: 100vh;
     /* text-align: center; */
@@ -8,7 +8,7 @@
     opacity: 0.4; */
 }
 
-.img {
+.reg-img {
     position: absolute;
     z-index: -1;
     height: 100vh;
@@ -17,12 +17,12 @@
     opacity: 0.8;
 }
 
-.myform {
+.register-myform {
     margin: 10% 0;
 
 }
 
-.login-form {
+.register-form {
     width: 350px;
     padding: 4% 2%;
     margin: 0 auto;
@@ -34,36 +34,34 @@
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.login-name, .login-password{
-    margin: 8% 0;
+.register-name, .register-password{
+    margin: 20px 0;
 }
 
-.name,
-.pwd {
+.reg-name,
+.reg-pwd {
     padding: 7px;
     border: none;
     border-radius: 8px;
     border-bottom: 1px solid black;
-    margin: 10px 0;
     width: 300px;
     margin: 0 3%;
-
 }
 
-.name:focus,
-.pwd:focus {
+.reg-name:focus,
+.reg-pwd:focus {
     outline: none;
 }
 
-.login-head {
+.register-head {
     font-size: 44px;
     font-weight: lighter;
-    text-align: center;
+    margin-bottom: 5%;
+    text-align: center  ;
 }
 
-.login-btn,
-.reg-btn {
-    margin: 5% auto;
+.register-btn {
+    margin: 10px auto;
     text-align: center;
     text-transform: uppercase;
     transition: 0.5s;
@@ -81,33 +79,26 @@
     touch-action: manipulation;
 }
 
-.login-btn{
-    padding: 8px 42px;
-}
-
-.reg-btn{
+.register-btn{
     padding: 8px 30px;
 }
 
-.login-btn:hover,
-.reg-btn:hover {
+.register-btn:hover {
     background-position: right center;
     /* change the direction of the change here */
     color: #fff;
     text-decoration: none;
 }
 
-.login-btn:active,
-.reg-btn:active {
+.register-btn:active {
     transform: scale(0.95);
 }
 
-.check{
+/* .check{
     color: red;
     font-size: 16px;
-    text-align: center;
-    /* padding: 0 10px; */
-}
+    padding: 0 10px;
+} */
 
 /* 
 .login-btn {
@@ -119,8 +110,8 @@
     padding: 5px 31px;
 } */
 
-.l-valid{
+.valid{
     font-size: 14px;
     color: red;
-    margin: 0 12px;
+    margin: 0 10px;
 }

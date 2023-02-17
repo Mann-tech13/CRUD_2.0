@@ -13,8 +13,8 @@
 }
 
 .pro-sidebar .pro-menu .pro-menu-item.active {
-  color: #ffffff;
-  background: #602592;
+  color: black;  
+  /* background: #602592; */
 }
 
 .pro-sidebar .pro-menu {
@@ -25,6 +25,6 @@
   color: #602592;
   /* position: absolute; */
 }
-.active{
+/* .active{
   border-bottom: 1px solid #602592;
-}
+} */
