@@ -3,8 +3,8 @@ import Sidebar from '../Sidebar/Sidebar'
 import axios from 'axios'
 import "./EmpForm.css"
 
-function EmpForm(props) {
-  console.log(props.setLoginUser);
+function EmpForm({user}) {
+
   let dataOnPage = 5
 
   // cound data
@@ -59,6 +59,9 @@ function EmpForm(props) {
     flag: "",
     department_id: 0
   }
+  useEffect(() => {
+    localStorage.setItem('user', user);
+}, []);
 
   useEffect(() => {
     setDependency(lastVal => (lastVal === true ? false : true));

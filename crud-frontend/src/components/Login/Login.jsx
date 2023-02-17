@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import "./Login.css"
 
-function Login({setLoginUser}) {
+function Login({setUser}) {
 	let navigate = useNavigate()
 	const [name, setName] = useState("")
 	const [pwd, setPwd] = useState("")
@@ -23,13 +23,15 @@ function Login({setLoginUser}) {
 		
 		const result = await axios.get(`http://localhost:9090/user/${name}`)
 		if (result.data.password === pwd) {
-			setLoginUser(result.data.user)
+			setUser(result.data.name)
+			// console.log(setUser);
 			navigate("/")
 		}
 		else {
 			setIncorrect(true)
 		}
 	}
+
 
 	const handleRegister = () => {
 		navigate("/register")

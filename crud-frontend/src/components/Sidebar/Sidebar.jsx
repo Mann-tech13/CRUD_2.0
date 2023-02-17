@@ -34,10 +34,14 @@ function Sidebar() {
         setBool(!bool)
         navigate('/department')
     }
+    const handleLogout = () => {
+        // setChangeLog(!changeLog)
+        localStorage.removeItem('user')
+        navigate("/")
+    }
     useEffect(() => {
         localStorage.setItem('active', JSON.stringify(activepage));
     }, [bool]);
-
 
 
     return (
@@ -66,6 +70,13 @@ function Sidebar() {
                             Department
                             {/* </div> */}
                         </MenuItem>
+                        <button onClick={handleLogout}>
+                            <MenuItem>
+
+                                Logout
+
+                            </MenuItem>
+                        </button>
                     </Menu>
                 </SidebarContent>
             </ProSidebar>

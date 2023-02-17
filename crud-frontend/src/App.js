@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import EmpForm from './components/Employee/EmpForm';
 import DepForm from './components/Department/DepForm'
@@ -10,17 +10,19 @@ import './App.css';
               user && user._id ? <Dashboard setLoginUser={user}/> : <AccountLogin setLoginUser={setLoginUser}/>
             }/> */}
 function App() {
-  const [ user, setLoginUser] = useState({})
-
-  // const [user, setUser] = useState("")
+  const [ user, setUser] = useState("")
+  const value = localStorage.getItem('user')
   return (
     <div className='App'>
       <Router>
+        {/* {console.log("user", user)} */}
         <Routes>
           {
-            console.log(user)
+            value !== null ?
+            <Route exact path='/' element={<EmpForm user={user}/>}/> :
+            <Route exact path='/' element={user !== "" ? <EmpForm user={user}/>: <Login setUser={setUser}/>} />
           }
-          <Route exact path='/' element={user ? <EmpForm setLoginUser={user}/>: <Login setLoginUser={setLoginUser}/>} />
+          
           <Route exact path='/register' element={<Register/>} />
           {/* <Route exact path='/employees' element={<EmpForm />} /> */}
           <Route exact path='/department' element={<DepForm />} />
