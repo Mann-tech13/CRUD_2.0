@@ -37,6 +37,7 @@ function Sidebar() {
     const handleLogout = () => {
         // setChangeLog(!changeLog)
         localStorage.removeItem('user')
+        window.location.reload()
         navigate("/")
     }
     useEffect(() => {
@@ -70,7 +71,7 @@ function Sidebar() {
                             Department
                             {/* </div> */}
                         </MenuItem>
-                        <button onClick={handleLogout}>
+                        <button onClick={handleLogout} className="logout">
                             <MenuItem>
 
                                 Logout

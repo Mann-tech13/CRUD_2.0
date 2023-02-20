@@ -3,8 +3,8 @@ import Sidebar from '../Sidebar/Sidebar'
 import axios from 'axios'
 import "./EmpForm.css"
 
-function EmpForm({user}) {
-
+function EmpForm() {
+  // console.log(localStorage.getItem("user"));
   let dataOnPage = 5
 
   // cound data
@@ -59,9 +59,6 @@ function EmpForm({user}) {
     flag: "",
     department_id: 0
   }
-  useEffect(() => {
-    localStorage.setItem('user', user);
-}, []);
 
   useEffect(() => {
     setDependency(lastVal => (lastVal === true ? false : true));
@@ -80,7 +77,6 @@ function EmpForm({user}) {
     else if (depId === undefined) {
       return setValidate({ dep_id: null })
     }
-    // setDependency(lastVal => (dependency === true ? false : true))
     let method_check = false
     emp = {
       employee_id: empId,
@@ -93,9 +89,7 @@ function EmpForm({user}) {
         method_check = true
       }
     })
-    // console.log(method_check)
     if (!method_check) {
-      // console.log("POST invoked")
       await axios.post("http://localhost:9090/employees", emp)
       setDependency(!dependency)
       setGetData([...getData, emp])

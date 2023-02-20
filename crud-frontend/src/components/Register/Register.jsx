@@ -13,7 +13,7 @@ function Register() {
   })
   let user = {
     name: "",
-    pwd: ""
+    password: ""
   }
   const handleRegister = async() => {
     if(name === ""){
@@ -22,13 +22,15 @@ function Register() {
     else if(pwd === ""){
       return setValidate({pwd: false})
     }
+    console.log(name, pwd)
     user = {
       name: name,
-      pwd: pwd
+      password: pwd
     }
     const result = await axios.get(`http://localhost:9090/user/${name}`)
-    console.log(result.data);
+    // console.log(result.data);
     if(result.data === ""){
+      console.log("user", user);
       await axios.post("http://localhost:9090/user", user)
       navigate("/")
     }

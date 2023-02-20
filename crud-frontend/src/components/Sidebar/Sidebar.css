@@ -25,6 +25,13 @@
   color: #602592;
   /* position: absolute; */
 }
+
+.logout{
+  margin-top: 10%;
+  background: none;
+  border: 2px solid lightseagreen;
+  border-radius: 8px;
+}
 /* .active{
   border-bottom: 1px solid #602592;
 } */
