@@ -4,7 +4,7 @@ import axios from 'axios'
 import "./EmpForm.css"
 
 function EmpForm() {
-  // console.log(localStorage.getItem("user"));
+  const [profile, setProfile] = useState(localStorage.getItem("user"))
   let dataOnPage = 5
 
   // cound data
@@ -305,6 +305,9 @@ function EmpForm() {
     <>
     <Sidebar/>
     <div className='content'>
+      <div className="profile">
+        User: {profile}
+      </div>
       <form action="" className='form' >
         <div className="employee-name">
           <input type="text" name="employee_name" value={empName} placeholder='Employee Name' className='input-field input' onChange={(e) => setEmpName(lastValue => (e.target.value))} />

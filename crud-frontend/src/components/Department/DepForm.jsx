@@ -209,6 +209,9 @@ function DepForm() {
                     <>
                         <Sidebar />
                         <div className='dep-field'>
+                            <div className="profile">
+                                User: {user}
+                            </div>
                             <form action="" className='d-form'>
 
                                 <div className="department-name">
