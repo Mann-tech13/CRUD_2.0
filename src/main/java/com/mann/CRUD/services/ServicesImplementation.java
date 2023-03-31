@@ -1,18 +1,25 @@
 package com.mann.CRUD.services;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.mann.CRUD.dao.AuthenticationDao;
 import com.mann.CRUD.dao.DepartmentDao;
 import com.mann.CRUD.dao.EmployeeDao;
+import com.mann.CRUD.entities.Authentication;
 import com.mann.CRUD.entities.Department;
 import com.mann.CRUD.entities.Employees;
+import com.mann.CRUD.vo.AuthenticationVO;
 import com.mann.CRUD.vo.DepartmentVO;
 import com.mann.CRUD.vo.EmployeeVO;
 
@@ -22,6 +29,8 @@ public class ServicesImplementation implements Services {
 	private EmployeeDao empDao;
 	@Autowired
 	private DepartmentDao departmentDao;
+	@Autowired
+	private AuthenticationDao authDao;
 
 //	Add Employee and department | PUSH & PUT
 	public Employees addEmployee(Employees employee) {
@@ -65,14 +74,21 @@ public class ServicesImplementation implements Services {
 
 //	Get all data of employee as well as department | GET
 	@Override
-	public List<EmployeeVO> getEmployeeData() {
+	public List<EmployeeVO> getEmployeePaginatedData(int pageNumber, int pageSize) {
 		List<EmployeeVO> listVO = new ArrayList<>();
 		List<Employees> list = new ArrayList<>();
-		list = empDao.findAll();
-
+//		int pageSize = 10;
+//		int pageNumber = 1;
+		Pageable pageable = PageRequest.of(pageNumber, pageSize);
+		Page<Employees> pages = empDao.findAll(pageable);
+//		List<Employees> content = pages.getContent();
+		list = pages.toList();
+//		System.out.println(list.size());	
 		for (Employees emp : list) {
-			int emp_id = emp.getEmployee_id();
-			String emp_name = emp.getEmployee_name();
+			System.out.println("inlist");
+			System.out.println(emp);
+			int emp_id = emp.getEmployeeId();
+			String emp_name = emp.getEmployeeName();
 			String flag = emp.getFlag();
 			Department dep = emp.getDepartment();
 
@@ -80,21 +96,91 @@ public class ServicesImplementation implements Services {
 		}
 		return listVO;
 	}
+	
+	@Override
+	public List<DepartmentVO> getByDepName(String depName) {
+		List<DepartmentVO> listVO = new ArrayList<>();
+		List<Department> list = new ArrayList<>();
+		list = departmentDao.findByDepartmentName(depName);
+		for(int i=0; i<list.size(); i++) {
+			Department dep = list.get(i);
+			DepartmentVO depVO = new DepartmentVO(dep.getDepartment_id(), dep.getDepartmentName(), dep.getFlag());
+			listVO.add(depVO);
+		}
+		return listVO;
+	}
 
 	@Override
-	public ResponseEntity<List<DepartmentVO>> getDepartmentData() {
+	public List<DepartmentVO> getByDepFlag(String flag) {
+		List<DepartmentVO> listVO = new ArrayList<>();
+		List<Department> list = new ArrayList<>();
+		list = departmentDao.findByFlag(flag);
+		for(int i=0; i<list.size(); i++) {
+			Department dep = list.get(i);
+			DepartmentVO depVO = new DepartmentVO(dep.getDepartment_id(), dep.getDepartmentName(), dep.getFlag());
+			listVO.add(depVO);
+		}
+		return listVO;
+	}
+	
+	@Override
+	public List<EmployeeVO> getEmployeeData() {
+		List<EmployeeVO> listVO = new ArrayList<>();
+		List<Employees> list = new ArrayList<>();
+		list = empDao.findAll();
+
+		for (Employees emp : list) {
+			int emp_id = emp.getEmployeeId();
+			String emp_name = emp.getEmployeeName();
+			String flag = emp.getFlag();
+			Department dep = emp.getDepartment();
+
+			listVO.add(new EmployeeVO(emp_id, emp_name, flag, dep.getDepartment_id()));
+		}
+		return listVO;
+	}
+	
+
+	@Override
+	public List<DepartmentVO> getDepartmentData() {
 		List<DepartmentVO> listVO = new ArrayList<>();
 		List<Department> list = new ArrayList<>();
 		list = departmentDao.findAll();
 
 		for (Department dep : list) {
 			int dep_id = dep.getDepartment_id();
-			String dep_name = dep.getDepartment_name();
+			String dep_name = dep.getDepartmentName();
 			String dep_flag = dep.getFlag();
 
 			listVO.add(new DepartmentVO(dep_id, dep_name, dep_flag));
 		}
-		return new ResponseEntity<List<DepartmentVO>>(listVO, HttpStatus.OK);
+		return listVO;
+	}
+	
+	@Override
+	public List<EmployeeVO> getByEmpName(String empName) {
+		List<EmployeeVO> listVO = new ArrayList<>();
+		List<Employees> list = new ArrayList<>();
+		list = empDao.findByEmployeeName(empName);
+		for(int i=0; i<list.size(); i++) {
+			Employees emp = list.get(i);
+			EmployeeVO empVO = new EmployeeVO(emp.getEmployeeId(), emp.getEmployeeName(), emp.getFlag(), emp.getDepartment().getDepartment_id());
+			listVO.add(empVO);
+		}
+		return listVO;
+	}
+	
+	@Override
+	public List<EmployeeVO> getByEmpFlag(String flag) {
+		List<EmployeeVO> listVO = new ArrayList<>();
+		List<Employees> list = new ArrayList<>();
+		list = empDao.findByFlag(flag);
+		for(int i=0; i<list.size(); i++) {
+			Employees emp = list.get(i);
+			EmployeeVO empVO = new EmployeeVO(emp.getEmployeeId(), emp.getEmployeeName(), emp.getFlag(), emp.getDepartment().getDepartment_id());
+			listVO.add(empVO);
+		}
+		return listVO;
 	}
 
 //	Delete Employee and Department Data | Soft & Hard Delete | DELETE
@@ -105,12 +191,12 @@ public class ServicesImplementation implements Services {
 		Employees entity = null;
 		if (emp.isPresent()) {
 			entity = emp.get();
-			empVO = new EmployeeVO(entity.getEmployee_id(), entity.getEmployee_name(), entity.getFlag(),
+			empVO = new EmployeeVO(entity.getEmployeeId(), entity.getEmployeeName(), entity.getFlag(),
 					entity.getDepartment().getDepartment_id());
 			if (empVO.getFlag().equals("Active")) {
 				empVO.setFlag("Inactive");
 				Department dep = new Department(entity.getDepartment().getDepartment_id(),
-						entity.getDepartment().getDepartment_name(), entity.getDepartment().getFlag());
+						entity.getDepartment().getDepartmentName(), entity.getDepartment().getFlag());
 				empDao.save(new Employees(empVO.getEmployee_id(), empVO.getEmployee_name(), dep, empVO.getFlag()));
 			}
 		} else {
@@ -127,7 +213,7 @@ public class ServicesImplementation implements Services {
 		Department entity = null;
 		if (dep.isPresent()) {
 			entity = dep.get();
-			depVO = new DepartmentVO(entity.getDepartment_id(), entity.getDepartment_name(), entity.getFlag());
+			depVO = new DepartmentVO(entity.getDepartment_id(), entity.getDepartmentName(), entity.getFlag());
 			if (depVO.getFlag().equals("Active")) {
 				depVO.setFlag("Inactive");
 				List<EmployeeVO> listVO = getEmployeeData();
@@ -156,7 +242,7 @@ public class ServicesImplementation implements Services {
 		Employees emp = null;
 		if(employee.isPresent()) {
 			emp = employee.get();
-			empVO = new EmployeeVO(emp.getEmployee_id(), emp.getEmployee_name(), emp.getFlag(), emp.getDepartment().getDepartment_id());
+			empVO = new EmployeeVO(emp.getEmployeeId(), emp.getEmployeeName(), emp.getFlag(), emp.getDepartment().getDepartment_id());
 		}
 		return empVO;
 	}
@@ -168,11 +254,35 @@ public class ServicesImplementation implements Services {
 		Department dep = null;
 		if(department.isPresent()) {
 			dep = department.get();
-			depVO = new DepartmentVO(dep.getDepartment_id(), dep.getDepartment_name(), dep.getFlag());
+			depVO = new DepartmentVO(dep.getDepartment_id(), dep.getDepartmentName(), dep.getFlag());
 		}
 		return depVO;
 	}
+
+//	Authentication
+	@Override
+	public Authentication addUserVO(AuthenticationVO valObj) {
+		Authentication user = new Authentication(valObj.getName(), valObj.getPassword());
+//		System.out.println(user.getName()+ " " + valObj.getPassword());
+		authDao.save(user);
+		return user;
+	}
+
+	@Override
+	public AuthenticationVO getUser(String name) {
+		Optional<Authentication> authentication = authDao.findById(name);
+		AuthenticationVO authVO = null;
+		Authentication auth = null;
+		if(authentication.isPresent()) {
+			auth = authentication.get();
+			authVO = new AuthenticationVO(auth.getName(), auth.getPassword());
+		}
+		return authVO;
+	}
+
+
 	
+
 	
 }
 

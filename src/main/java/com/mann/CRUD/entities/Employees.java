@@ -17,9 +17,11 @@ public class Employees {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@SequenceGenerator(initialValue = 50, name = "emp")
-	@Column(unique=true)
-	private int employee_id;	
-	private String employee_name;	
+	@Column(name= "employee_id", unique=true)
+	private int employeeId;	
+	
+	@Column(name= "employee_name")
+	private String employeeName;	
 	@JsonBackReference
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name = "department_id")
@@ -36,8 +38,8 @@ public class Employees {
 	public Employees(int employee_id, String employee_name, Department department, String flag) {
 		super();
 		
-		this.employee_id = employee_id;
-		this.employee_name = employee_name;
+		this.employeeId = employee_id;
+		this.employeeName = employee_name;
 		this.flag = flag;
 		this.department = department;
 	}
@@ -53,17 +55,17 @@ public class Employees {
 	}
 
 
-	public int getEmployee_id() {
-		return employee_id;
+	public int getEmployeeId() {
+		return employeeId;
 	}
-	public void setEmployee_id(int employee_id) {
-		this.employee_id = employee_id;
+	public void setEmployeeId(int employeeId) {
+		this.employeeId = employeeId;
 	}
-	public String getEmployee_name() {
-		return employee_name;
+	public String getEmployeeName() {
+		return employeeName;
 	}
-	public void setEmployee_name(String employee_name) {
-		this.employee_name = employee_name;
+	public void setEmployeeName(String employeeName) {
+		this.employeeName = employeeName;
 	}
 	public String getFlag() {
 		return flag;

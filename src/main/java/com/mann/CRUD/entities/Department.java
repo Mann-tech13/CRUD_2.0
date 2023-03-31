@@ -20,7 +20,8 @@ public class Department {
 	@SequenceGenerator(initialValue = 50, name = "emp")
 	@Column(unique=true)
 	private int department_id;	
-	private String department_name;
+	@Column(name="department_name", unique=true)
+	private String departmentName;
 	private String flag;
 	
 //	Can have many employees
@@ -32,10 +33,10 @@ public class Department {
 		super();
 	}
 	
-	public Department(int department_id, String department_name, String flag) {
+	public Department(int department_id, String departmentName, String flag) {
 		super();
 		this.department_id = department_id;
-		this.department_name = department_name;
+		this.departmentName = departmentName;
 		this.flag = flag;
 	}
 
@@ -45,11 +46,11 @@ public class Department {
 	public void setDepartment_id(int department_id) {
 		this.department_id = department_id;
 	}
-	public String getDepartment_name() {
-		return department_name;
+	public String getDepartmentName() {
+		return departmentName;
 	}
-	public void setDepartment_name(String department_name) {
-		this.department_name = department_name;
+	public void setDepartment_name(String departmentName) {
+		this.departmentName = departmentName;
 	}
 	public String getFlag() {
 		return flag;

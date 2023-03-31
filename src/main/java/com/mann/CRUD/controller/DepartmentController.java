@@ -41,7 +41,7 @@ public class DepartmentController {
 	}
 	
 	@GetMapping(path = "/department")
-	public ResponseEntity<List<DepartmentVO>> getData(){
+	public List<DepartmentVO> getData(){
 		return this.service.getDepartmentData();
 	}
 	
@@ -53,5 +53,15 @@ public class DepartmentController {
 	@DeleteMapping(path = "/department/{departmentId}")
 	public DepartmentVO deleteDepartment(@PathVariable String departmentId) {
 		return this.service.deleteDepartment(Integer.parseInt(departmentId));
+	}
+	
+	@GetMapping(path = "/department/name/{depName}")
+	public List<DepartmentVO> getByDepName(@PathVariable String depName) {
+		return this.service.getByDepName(depName);
+	}
+	
+	@GetMapping(path = "/department/status/{flag}")
+	public List<DepartmentVO> getByDepFlag(@PathVariable String flag) {
+		return this.service.getByDepFlag(flag);
 	}
 }

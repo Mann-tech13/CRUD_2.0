@@ -32,14 +32,33 @@ public class EmployeeController {
 		return "testing..!";
 	}
 	
+	@GetMapping(path = "/employees/{pageNumber}/{pageSize}")
+	public List<EmployeeVO> getData(@PathVariable int pageNumber, @PathVariable int pageSize){
+
+		return this.service.getEmployeePaginatedData(pageNumber, pageSize);
+//		return null;
+	}
+	
 	@GetMapping(path = "/employees")
 	public List<EmployeeVO> getData(){
+		
 		return this.service.getEmployeeData();
+//		return null;
 	}
 	
 	@GetMapping(path = "/employees/{employeeId}")
 	public EmployeeVO getSingleEmployee(@PathVariable String employeeId) {
 		return this.service.getSingleEmployee(Integer.parseInt(employeeId));
+	}
+	
+	@GetMapping(path = "/employees/name/{empName}")
+	public List<EmployeeVO> getByEmpName(@PathVariable String empName) {
+		return this.service.getByEmpName(empName);
+	}
+	
+	@GetMapping(path = "/employees/status/{flag}")
+	public List<EmployeeVO> getByEmpFlag(@PathVariable String flag) {
+		return this.service.getByEmpFlag(flag);
 	}
 	
 	@PostMapping(path = "/employees", consumes = "application/json")
